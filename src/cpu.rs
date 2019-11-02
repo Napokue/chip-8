@@ -1,3 +1,5 @@
+use std::fs;
+
 pub struct Cpu {
     opcode: u16,
     memory: [u8; 4096],
@@ -13,11 +15,17 @@ pub struct Cpu {
 }
 
 impl Cpu {
-    pub fn new() -> Self {
-        let mut memory = [0; 4096];        
+    pub fn new(rom_path: &str) -> Self {
+        let mut memory = [0; 4096];
+        
+        let rom_data = fs::read(rom_path).unwrap();
 
         for i in 0..80 {
             memory[i] = FONT_SET[i];
+        }
+
+        for i in 0..rom_data.len() {
+            memory[i + 512] = rom_data[i];
         }
 
         Cpu {
