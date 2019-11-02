@@ -1,16 +1,15 @@
 use std::fs;
 
 pub struct Cpu {
-    opcode: u16,
     memory: [u8; 4096],
     v: [u8; 16],
-    i: u16,
-    pc: u16,
+    i: usize,
+    pc: usize,
     gfx: [[u8; 64]; 32],
     delay_timer: u8,
     sound_timer: u8,
-    stack: u16,
-    sp: u16,
+    stack: [u16; 16],
+    sp: usize,
     key: [u8; 16]
 }
 
@@ -29,7 +28,6 @@ impl Cpu {
         }
 
         Cpu {
-            opcode: 0,
             memory,
             v: [0; 16],
             i: 0,
@@ -37,11 +35,71 @@ impl Cpu {
             gfx: [[0; 64]; 32],
             delay_timer: 0,
             sound_timer: 0,
-            stack: 0,
+            stack: [0; 16],
             sp: 0,
             key: [0; 16]
         }
     }    
+
+    pub fn emulate_cycle(&mut self) {
+        let opcode = (self.memory[self.pc] as u16) << 8 | (self.memory[self.pc + 1] as u16);
+
+        println!("{}", opcode);
+
+        match opcode & 0x0F000 {
+            0x0000 => {
+                println!("{}", 0x0000);
+            },
+            0x1000 => {
+                println!("{}", 0x0000);
+            },
+            0x2000 => {
+                println!("{}", 0x2000);
+            },
+            0x3000 => {
+                println!("{}", 0x3000);
+            },
+            0x4000 => {
+                println!("{}", 0x4000);
+            },
+            0x5000 => {
+                println!("{}", 0x5000);
+            },
+            0x6000 => {
+                println!("{}", 0x6000);
+            },
+            0x7000 => {
+                println!("{}", 0x7000);
+            },
+            0x8000 => {
+                println!("{}", 0x8000);
+            },
+            0x9000 => {
+                println!("{}", 0x9000);
+            }
+            0xA000 => {
+                self.i = (opcode & 0x0FFF) as usize;
+                self.pc += 2;
+                println!("{}", 0xA000);
+            },
+            0xB000 => {
+                println!("{}", 0xB000);
+            },
+            0xC000 => {
+                println!("{}", 0xC000);
+            },
+            0xD000 => {
+                println!("{}", 0xD000);
+            },
+            0xE000 => {
+                println!("{}", 0xE000);
+            },
+            0xF000 => {
+                println!("{}", 0xF000);
+            },
+            _ => println!("Unknown opcode: {}", opcode)
+        }
+    }
 }
 
 pub const FONT_SET: [u8; 80] = [

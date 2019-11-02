@@ -6,5 +6,9 @@ use std::env;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let cpu = Cpu::new(&args[1]);
+    let mut cpu = Cpu::new(&args[1]);
+
+    // loop {
+        cpu.emulate_cycle();
+    // }
 }
