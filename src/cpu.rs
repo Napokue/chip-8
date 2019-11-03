@@ -1,4 +1,3 @@
-use std::fs;
 use std::{fs, thread, time};
 
 pub struct Cpu {
@@ -45,6 +44,12 @@ impl Cpu {
     pub fn emulate_cycle(&mut self) {
         let opcode = (self.memory[self.pc] as u16) << 8 | (self.memory[self.pc + 1] as u16);
 
+        let nnn = (opcode & 0x0FFF);
+        let kk = (opcode & 0x00FF) as u8;
+        let x = (opcode & 0x0F00) >> 8 as u8;
+        let y = (opcode & 0x00F0) >> 4 as u8;
+        let n = (opcode & 0x00F) as u8;
+
         println!("opcode: {}", opcode);
 
         match opcode & 0x0F000 {
@@ -55,21 +60,21 @@ impl Cpu {
                         println!("0x0000");            
                     },
                     0x000E => { // 0x00EE
-                        // self.sp -= 1;
-                        // self.pc = self.stack[self.sp] as usize;
-                        println!("0x000E");               
-
+                        self.sp -= 1;
+                        self.pc = self.stack[self.sp] as usize;
+                        println!("0x000E");
                     },
                     _ => println!("Unknown opcode: {}", opcode)
                 }
             },
             0x1000 => { // 0x1NNN
+                self.pc = nnn as usize;
                 println!("0x0000");
-                self.stack[self.pc] = self.pc as u16;
-                self.sp += 1;
-                self.pc = (opcode & 0x0FFF) as usize;
             },
             0x2000 => { // 0x2NNN
+                self.stack[self.pc] = self.pc as u16;
+                self.sp += 1;
+                self.pc = nnn as usize;
                 println!("0x2000");
             },
             0x3000 => { // 0x3NNN
@@ -82,6 +87,8 @@ impl Cpu {
                 println!("0x5000");
             },
             0x6000 => { // 0x6XNN
+                self.v[x as usize] = kk;
+                self.pc += 2;
                 println!("0x6000");
             },
             0x7000 => { // 0x7XNN
@@ -97,7 +104,7 @@ impl Cpu {
                 println!("0x9000");
             }
             0xA000 => { // 0xANNN
-                self.i = (opcode & 0x0FFF) as usize;
+                self.i = nnn as usize;
                 self.pc += 2;
                 println!("0xA000");
             },
