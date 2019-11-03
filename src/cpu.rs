@@ -48,75 +48,75 @@ impl Cpu {
 
         match opcode & 0x0F000 {
             0x0000 => {
-                println!("{}", 0x0000);
+                println!("0x0000");
                 match opcode & 0x000F {
                     0x0000 => { // 0x00E0
-                        println!("{}", 0x0000);            
+                        println!("0x0000");            
                     },
                     0x000E => { // 0x00EE
                         // self.sp -= 1;
                         // self.pc = self.stack[self.sp] as usize;
-                        println!("{}", 0x000E);               
+                        println!("0x000E");               
 
                     },
                     _ => println!("Unknown opcode: {}", opcode)
                 }
             },
             0x1000 => { // 0x1NNN
-                println!("{}", 0x0000);
+                println!("0x0000");
                 self.stack[self.pc] = self.pc as u16;
                 self.sp += 1;
                 self.pc = (opcode & 0x0FFF) as usize;
             },
             0x2000 => { // 0x2NNN
-                println!("{}", 0x2000);
+                println!("0x2000");
             },
             0x3000 => { // 0x3NNN
-                println!("{}", 0x3000);
+                println!("0x3000");
             },
             0x4000 => { // 0x4NNN
-                println!("{}", 0x4000);
+                println!("0x4000");
             },
             0x5000 => { // 0x5XY0
-                println!("{}", 0x5000);
+                println!("0x5000");
             },
             0x6000 => { // 0x6XNN
-                println!("{}", 0x6000);
+                println!("0x6000");
             },
             0x7000 => { // 0x7XNN
-                println!("{}", 0x7000);
+                println!("0x7000");
             },
             0x8000 => {
-                println!("{}", 0x8000);
+                println!("0x8000");
                 match opcode & 0x000F {
                     _ => println!("0x8000 opcode: {}", opcode)
                 }                
             },
             0x9000 => { // 0x9XY0
-                println!("{}", 0x9000);
+                println!("0x9000");
             }
             0xA000 => { // 0xANNN
                 self.i = (opcode & 0x0FFF) as usize;
                 self.pc += 2;
-                println!("{}", 0xA000);
+                println!("0xA000");
             },
             0xB000 => { // 0xBNNN
-                println!("{}", 0xB000);
+                println!("0xB000");
             },
             0xC000 => { // 0xCXNN
-                println!("{}", 0xC000);
+                println!("0xC000");
             },
             0xD000 => { // 0xDXYN
-                println!("{}", 0xD000);
+                println!("0xD000");
             },
             0xE000 => {
-                println!("{}", 0xE000);
+                println!("0xE000");
                 match opcode & 0x000F {
                     _ => println!("0xE000 opcode: {}", opcode)
                 }   
             },
             0xF000 => {
-                println!("{}", 0xF000);
+                println!("0xF000");
                 match opcode & 0x000F {
                     _ => println!("0xF000 opcode: {}", opcode)
                 } 
