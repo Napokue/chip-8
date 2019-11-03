@@ -1,4 +1,5 @@
 use std::fs;
+use std::{fs, thread, time};
 
 pub struct Cpu {
     memory: [u8; 4096],
@@ -123,6 +124,16 @@ impl Cpu {
             },
             _ => println!("Unknown opcode: {}", opcode)
         }
+
+        if self.delay_timer > 0 {
+            self.delay_timer -= 1;
+        }
+
+        if self.sound_timer > 0 {
+            self.sound_timer -= 1;
+        }
+
+        thread::sleep(time::Duration::from_secs(1))
     }
 }
 
