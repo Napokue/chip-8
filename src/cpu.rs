@@ -57,11 +57,17 @@ impl Cpu {
                 println!("0x0000");
                 match opcode & 0x000F {
                     0x0000 => { // 0x00E0
+                        for y in 0..self.gfx.len() {
+                            for x in 0..self.gfx[y].len() {
+                                self.gfx[y][x] = 0;
+                            }
+                        }
+
                         println!("0x0000");            
                     },
-                    0x000E => { // 0x00EE
-                        self.sp -= 1;
+                    0x000E => { // 0x00EE                        
                         self.pc = self.stack[self.sp] as usize;
+                        self.sp -= 1;
                         println!("0x000E");
                     },
                     _ => println!("Unknown opcode: {}", opcode)
@@ -72,18 +78,27 @@ impl Cpu {
                 println!("0x0000");
             },
             0x2000 => { // 0x2NNN
-                self.stack[self.pc] = self.pc as u16;
                 self.sp += 1;
+                self.stack[self.pc] = self.pc as u16;                
                 self.pc = nnn as usize;
                 println!("0x2000");
             },
             0x3000 => { // 0x3NNN
+                if self.v[x as usize] == kk {
+                    self.pc += 2;
+                }
                 println!("0x3000");
             },
             0x4000 => { // 0x4NNN
+                if self.v[x as usize] != kk {
+                    self.pc += 2;
+                }
                 println!("0x4000");
             },
             0x5000 => { // 0x5XY0
+                if self.v[x as usize] == self.v[y as usize] {
+                    self.pc += 2;
+                }
                 println!("0x5000");
             },
             0x6000 => { // 0x6XNN
@@ -92,11 +107,48 @@ impl Cpu {
                 println!("0x6000");
             },
             0x7000 => { // 0x7XNN
+                self.v[x as usize] = self.v[x as usize] + kk;
                 println!("0x7000");
             },
             0x8000 => {
                 println!("0x8000");
                 match opcode & 0x000F {
+                    0x8001 => {
+                        self.v[x as usize] = self.v[x as usize] | self.v[y as usize];
+                    },
+                    0x8002 => {
+                        self.v[x as usize] = self.v[x as usize] & self.v[y as usize];
+                    },
+                    0x8003 => {
+                        self.v[x as usize] = self.v[x as usize] ^ self.v[y as usize];
+                    },
+                    0x8004 => {
+                        // TODO
+                    },
+                    0x8005 => {
+                        if self.v[x as usize] > self.v[y as usize] {
+                            self.v[0xF] = 1;
+                        } else {
+                            self.v[0xF] = 0;
+                        }
+
+                        self.v[x as usize] = self.v[x as usize] - self.v[y as usize];
+                    },
+                    0x8006 => {
+                        // TODO
+                    },
+                    0x8007 => {
+                        if self.v[y as usize] > self.v[x as usize] {
+                            self.v[0xF] = 1;
+                        } else {
+                            self.v[0xF] = 0;
+                        }
+
+                        self.v[x as usize] = self.v[y as usize] - self.v[x as usize];
+                    },
+                    0x800E => {
+                        // TODO
+                    },
                     _ => println!("0x8000 opcode: {}", opcode)
                 }                
             },
