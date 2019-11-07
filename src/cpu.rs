@@ -297,6 +297,7 @@ impl Cpu {
                 println!("Fx65");
                 self.next_instruction();
             },
+            _ => println!("Unknown opcode: {:?}", nibbles)
         }
 
         if self.delay_timer > 0 {
