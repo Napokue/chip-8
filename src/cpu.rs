@@ -1,4 +1,4 @@
-use std::{fs, thread, time};
+use std::{fs};
 use rand::Rng;
 
 pub struct Cpu {
@@ -315,9 +315,7 @@ impl Cpu {
 
         if self.sound_timer > 0 {
             self.sound_timer -= 1;
-        }
-
-        thread::sleep(time::Duration::from_millis(500))
+        }        
     }
 
     fn next_instruction(&mut self) {
