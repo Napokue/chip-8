@@ -156,17 +156,23 @@ impl Cpu {
             },
             // 8xy4 - ADD Vx, Vy
             (0x08, _, _, 0x04) => {
-                // TODO
                 println!("8xy4");
+                self.v[x as usize] = self.v[x as usize] + self.y[y as usize];
+
+                if self.v[x as usize] > 255 {
+                    self.v[0x0F] = 1;
+                } else {
+                    self.v[0x0F] = 0;
+                }
                 self.next_instruction();
             },
             // 8xy5 - SUB Vx, Vy
             (0x08, _, _, 0x05) => {
                 println!("8xy5");
                 if self.v[x as usize] > self.v[y as usize] {
-                    self.v[0xF] = 1;
+                    self.v[0x0F] = 1;
                 } else {
-                    self.v[0xF] = 0;
+                    self.v[0x0F] = 0;
                 }
 
                 self.v[x as usize] = self.v[x as usize] - self.v[y as usize];
@@ -174,17 +180,18 @@ impl Cpu {
             },
             // 8xy6 - SHR VX, Vy
             (0x08, _, _, 0x06) => {
-                // TODO
                 println!("8xy6");
+                self.v[0x0F] = self.v[x as usize] & 0x1;
+                self.v[x as usize] >>= 1;                
                 self.next_instruction();
             },
             // 8xy7 - SUBN Vx, Vy
             (0x08, _, _, 0x07) => {
                 println!("8xy7");
                 if self.v[y as usize] > self.v[x as usize] {
-                    self.v[0xF] = 1;
+                    self.v[0x0F] = 1;
                 } else {
-                    self.v[0xF] = 0;
+                    self.v[0x0F] = 0;
                 }
 
                 self.v[x as usize] = self.v[y as usize] - self.v[x as usize];
@@ -192,7 +199,9 @@ impl Cpu {
             },
             // 8xyE - SHL Vx, Vy
             (0x08, _, _, 0x0E) => {
-                // TODO
+                self.v[0x0F] = self.v[x as usize] & 0x80;
+                self.v[x as usize] <<= 1;              
+
                 println!("8xyE");
                 self.next_instruction();
             },
