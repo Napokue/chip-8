@@ -157,7 +157,7 @@ impl Cpu {
             // 8xy4 - ADD Vx, Vy
             (0x08, _, _, 0x04) => {
                 println!("8xy4");
-                self.v[x as usize] = self.v[x as usize] + self.y[y as usize];
+                self.v[x as usize] = self.v[x as usize] + self.v[y as usize];
 
                 if self.v[x as usize] > 255 {
                     self.v[0x0F] = 1;
