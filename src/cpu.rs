@@ -11,7 +11,8 @@ pub struct Cpu {
     sound_timer: u8,
     stack: [u16; 16],
     sp: usize,
-    pub key: [u8; 16]
+    pub key: [u8; 16],
+    pub draw_flag: bool
 }
 
 impl Cpu {
@@ -38,7 +39,8 @@ impl Cpu {
             sound_timer: 0,
             stack: [0; 16],
             sp: 0,
-            key: [0; 16]
+            key: [0; 16],
+            draw_flag: false
         }
     }
 
