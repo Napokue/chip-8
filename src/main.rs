@@ -16,16 +16,36 @@ const SCREEN_HEIGHT : usize = 32;
 const WINDOW_SIZE : (f32, f32) = (
     SCREEN_WIDTH as f32 * DPI_FACTOR, 
     SCREEN_HEIGHT as f32 * DPI_FACTOR);
+
+pub struct GPU {
+    screen: [[u8; SCREEN_WIDTH]; SCREEN_HEIGHT]
+}
+
+impl GPU {
+    pub fn new() -> Self {
+        GPU {
+            screen: [[0; SCREEN_WIDTH]; SCREEN_HEIGHT]
+        }
+    }
+
+    pub fn draw_screen(&mut self, vram: [[u8; SCREEN_WIDTH]; SCREEN_HEIGHT]) {
+        for y in 0..SCREEN_HEIGHT  {
+            for x in 0..SCREEN_WIDTH {
+                self.screen[y][x] = vram[y][x];
+            }
+        }
+    }
+}
+
 const CPU_DELAY : u64 = 5000; // microseconds
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut cpu = Cpu::new(&args[1]);
-
+    let mut gpu = GPU::new();    
 
     let mut events_loop = EventLoop::new();
     let window = WindowBuilder::new()
-        .with_inner_size(LogicalSize::new(screen_size.0, screen_size.1))
         .with_inner_size(LogicalSize::new(WINDOW_SIZE.0, WINDOW_SIZE.1))
         .build(&events_loop)
         .unwrap();
@@ -197,7 +217,6 @@ fn main() {
                 _ => (),
             },
             Event::MainEventsCleared  => {
-
                 if (cpu.draw_flag) {
                     window.request_redraw();
                     cpu.draw_flag = false;
@@ -206,7 +225,7 @@ fn main() {
                 thread::sleep(time::Duration::from_micros(CPU_DELAY));
             },
             Event::RedrawRequested(_) => {
-                // Redraw the application
+                gpu.draw_screen(cpu.vram);
             },
             _ => {}
         }            
