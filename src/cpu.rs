@@ -72,6 +72,7 @@ impl Cpu {
                         self.vram[y][x] = 0;
                     }
                 }
+                self.draw_flag = true;
 
                 self.next_instruction();
             },
