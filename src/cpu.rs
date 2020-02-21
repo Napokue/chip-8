@@ -3,10 +3,10 @@ use rand::Rng;
 
 pub struct Cpu {
     memory: [u8; 4096],
+    pub vram: [[u8; 64]; 32],
     v: [u8; 16],
     i: usize,
     pc: usize,
-    gfx: [[u8; 64]; 32],
     delay_timer: u8,
     sound_timer: u8,
     stack: [u16; 16],
@@ -31,10 +31,10 @@ impl Cpu {
 
         Cpu {
             memory,
+            vram: [[0; 64]; 32],
             v: [0; 16],
             i: 0,
             pc: 0x200,
-            gfx: [[0; 64]; 32],
             delay_timer: 0,
             sound_timer: 0,
             stack: [0; 16],
@@ -67,9 +67,9 @@ impl Cpu {
             // 00E0 - CLS
             (0x00, 0x00, 0x0E, 0x00) => {
                 println!("00E0");
-                for y in 0..self.gfx.len() {
-                    for x in 0..self.gfx[y].len() {
-                        self.gfx[y][x] = 0;
+                for y in 0..self.vram.len() {
+                    for x in 0..self.vram[y].len() {
+                        self.vram[y][x] = 0;
                     }
                 }
 
