@@ -9,18 +9,24 @@ use winit::event_loop::{ControlFlow, EventLoop};
 use winit::window::{WindowBuilder};
 use winit::dpi::{LogicalSize};
 
+const DPI_FACTOR : f32 = 10.0;
+const SCREEN_WIDTH : usize = 64;
+const SCREEN_HEIGHT : usize = 32;
+
+const WINDOW_SIZE : (f32, f32) = (
+    SCREEN_WIDTH as f32 * DPI_FACTOR, 
+    SCREEN_HEIGHT as f32 * DPI_FACTOR);
 const CPU_DELAY : u64 = 5000; // microseconds
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut cpu = Cpu::new(&args[1]);
 
-    let dpi_factor = 10.0;
-    let screen_size = (64.0 * dpi_factor, 32.0 * dpi_factor);
 
     let mut events_loop = EventLoop::new();
     let window = WindowBuilder::new()
         .with_inner_size(LogicalSize::new(screen_size.0, screen_size.1))
+        .with_inner_size(LogicalSize::new(WINDOW_SIZE.0, WINDOW_SIZE.1))
         .build(&events_loop)
         .unwrap();
 
