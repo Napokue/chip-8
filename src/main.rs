@@ -1,3 +1,6 @@
+use crate::{
+    boilerplate::Application
+};
 mod cpu;
 
 use cpu::Cpu;
