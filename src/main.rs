@@ -39,6 +39,7 @@ impl GPU {
 
 const CPU_DELAY : u64 = 5000; // microseconds
 
+mod engines;
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut cpu = Cpu::new(&args[1]);
@@ -230,4 +231,5 @@ fn main() {
             _ => {}
         }            
     });
+    let renderer = engines::graphics::Engine::new();
 }
