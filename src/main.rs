@@ -4,38 +4,8 @@ use cpu::Cpu;
 
 use std::{env, thread, time};
 
-use winit::event::{ElementState, Event, KeyboardInput, VirtualKeyCode, WindowEvent};
-use winit::event_loop::{ControlFlow, EventLoop};
-use winit::window::{WindowBuilder};
-use winit::dpi::{LogicalSize};
-
-const DPI_FACTOR : f32 = 10.0;
-const SCREEN_WIDTH : usize = 64;
-const SCREEN_HEIGHT : usize = 32;
-
-const WINDOW_SIZE : (f32, f32) = (
-    SCREEN_WIDTH as f32 * DPI_FACTOR, 
-    SCREEN_HEIGHT as f32 * DPI_FACTOR);
-
-pub struct GPU {
-    screen: [[u8; SCREEN_WIDTH]; SCREEN_HEIGHT]
-}
-
-impl GPU {
-    pub fn new() -> Self {
-        GPU {
-            screen: [[0; SCREEN_WIDTH]; SCREEN_HEIGHT]
-        }
-    }
-
-    pub fn draw_screen(&mut self, vram: [[u8; SCREEN_WIDTH]; SCREEN_HEIGHT]) {
-        for y in 0..SCREEN_HEIGHT  {
-            for x in 0..SCREEN_WIDTH {
-                self.screen[y][x] = vram[y][x];
-            }
-        }
-    }
-}
+#[path = "./boilerplate.rs"]
+mod boilerplate;
 
 const CPU_DELAY : u64 = 5000; // microseconds
 
@@ -222,6 +192,7 @@ fn main() {
                     window.request_redraw();
                     cpu.draw_flag = false;
                 }
+    let mut harness = boilerplate::Harness::new("Chip 8 Emulator");
 
                 thread::sleep(time::Duration::from_micros(CPU_DELAY));
             },
