@@ -11,3 +11,4 @@ winit = "0.21.0"
 wgpu = { git = "https://github.com/gfx-rs/wgpu-rs" }
 rand = "0.7.3"
 futures = "0.3.4"
+euclid = "0.20.7"

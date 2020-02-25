@@ -2,6 +2,9 @@ use crate::{
     boilerplate::Application
 };
 
+mod engines;
+mod drivers;
+
 mod cpu;
 
 use cpu::Cpu;
@@ -12,8 +15,6 @@ use std::{env, thread, time};
 mod boilerplate;
 
 const CPU_DELAY : u64 = 5000; // microseconds
-
-mod engines;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
