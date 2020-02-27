@@ -1,10 +1,6 @@
 //! Implementation of the low level building blocks of the driver, 
 //! such as the VRAM allocation and other requirements of the emulator.
 
-use euclid::{
-    Point2D
-};
-
 const SCREEN_WIDTH: usize = 64;
 const SCREEN_HEIGHT: usize = 32;
 const SPRITE_WIDTH: usize = 8;
@@ -34,18 +30,31 @@ impl Driver {
     /// Parameter: `location` - X is the most left position 
     /// and Y is the top left corner of the sprite.
     pub fn draw_sprite(&mut self,
-        height: usize,
-        location: Point2D<usize, usize>) {
+        x: usize,
+        y: usize,
+        height: usize) {
+
+        // TODO Create property for this variable, so it can be used elsewhere
+        let mut carry_flag = false;
         
-        for y in 0..SCREEN_HEIGHT {
-            for x in 0..SCREEN_WIDTH {                
-                if location.x != x && location.y != y {
+        for screen_y in 0..SCREEN_HEIGHT {
+            for screen_x in 0..SCREEN_WIDTH {                
+                if x != screen_x && y != screen_y {
                     continue;
+                }                
+                
+                // We won't need to XOR anymore, 
+                // because the flag has already been set.
+                if carry_flag {
+                    break;
                 }
 
-                // Overlapping coords found
+                // XOR current screen pixel with the sprite
+                let screen_pixel = self.vram[screen_y][screen_x] as usize;
 
-                // XOR current screen pixels with the sprite
+                if screen_pixel ^ x == 0 {
+                    carry_flag = true;
+                }
             }
         }
     }
