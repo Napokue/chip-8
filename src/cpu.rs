@@ -48,8 +48,7 @@ impl Cpu {
         let opcode = (self.memory[self.pc] as u16) << 8 | (self.memory[self.pc + 1] as u16);
 
         println!("opcode: {}", opcode);
-
-        // Credits to https://github.com/starrhorne/chip8-rust for this nibble match implementation
+        
         let nibbles = (
             (opcode & 0xF000) >> 12 as u8,
             (opcode & 0x0F00) >> 8 as u8,
