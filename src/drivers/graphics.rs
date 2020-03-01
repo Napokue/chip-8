@@ -24,44 +24,41 @@ impl Driver {
         }
     }
 
-    /// Parameter: `height` - Height of the sprite, which can
-    /// be between the 1 and 15 pixels.
-    /// 
-    /// Parameter: `location` - X is the most left position 
-    /// and Y is the top left corner of the sprite.
-    pub fn draw_sprite(&mut self,
-        x: usize,
-        y: usize,
-        height: usize) {
+    fn generate_sprite_map(self,
+        height: usize) -> Vec<Vec<usize>>{
+        let mut sprite_map : Vec<Vec<usize>> = vec![];
 
-        // TODO Create property for this variable, so it can be used elsewhere
-        let mut carry_flag = false;
+        for _ in 0..height {
+            let inner_vec : Vec<usize> = (0..SPRITE_WIDTH)
+            .map(|_|1 as usize)
+            .collect();
+            sprite_map.push(inner_vec);            
+        }
 
-        for screen_y in 0..SCREEN_HEIGHT {
-            for screen_x in 0..SCREEN_WIDTH {                
-                if x != screen_x && y != screen_y {
-                    continue;
-                }
+        sprite_map
+    }     
+}
 
-                // TODO Set screen pixels to set, so we known where to draw
-                
-                // TODO Create a map of coordinates for the sprite
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-                // TODO Pass map of coordinates to WGPU to draw                
-                
-                // We won't need to XOR anymore, 
-                // because the flag has already been set.
-                if carry_flag {
-                    break;
-                }
+    #[test]
+    fn test_generate_sprite_map() {
+        let driver = Driver::new();
+        let sprite_map = driver.generate_sprite_map(10);
 
-                // XOR current screen pixel with the sprite
-                let screen_pixel = self.vram[screen_y][screen_x] as usize;
-
-                if screen_pixel ^ x == 0 {
-                    carry_flag = true;
-                }
+        println!("Raw map: {:?}", sprite_map);
+        println!("Display map: ");
+        for y in 0..sprite_map.len() {
+            print!("Row {}: ", y);
+            for x in sprite_map[y].iter() {
+                match x {
+                    1 => print!("*"),
+                    _ => print!("")
+                }                
             }
+            println!("");
         }
     }
 }
