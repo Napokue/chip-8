@@ -16,7 +16,7 @@ impl Engine {
         }
     }
 
-    fn clear_screen(&self) {
+    fn clear_screen(&mut self) {
         self.driver.clear_screen();
     }
 
