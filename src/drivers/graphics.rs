@@ -24,7 +24,7 @@ impl Driver {
         }
     }
 
-    fn generate_sprite_map(&self,
+    pub fn generate_sprite_map(&self,
         height: usize) -> Vec<Vec<usize>> {
         let mut sprite_map : Vec<Vec<usize>> = vec![];
 
@@ -38,7 +38,7 @@ impl Driver {
         sprite_map
     }
 
-    fn overlay_map(&mut self,
+    pub fn overlay_map(&mut self,
         sprite_x: usize,
         sprite_y: usize,
         sprite_map : Vec<Vec<usize>>,
