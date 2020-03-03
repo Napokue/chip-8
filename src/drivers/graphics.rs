@@ -24,7 +24,7 @@ impl Driver {
         }
     }
 
-    fn generate_sprite_map(self,
+    fn generate_sprite_map(&self,
         height: usize) -> Vec<Vec<usize>>{
         let mut sprite_map : Vec<Vec<usize>> = vec![];
 
@@ -36,7 +36,14 @@ impl Driver {
         }
 
         sprite_map
-    }     
+    }
+
+    fn overlay_map(&self,
+        sprite_x: usize,
+        sprite_y: usize,
+        height: usize) {
+        
+    }
 }
 
 #[cfg(test)]
@@ -55,7 +62,29 @@ mod tests {
             for x in sprite_map[y].iter() {
                 match x {
                     1 => print!("*"),
-                    _ => print!("")
+                    _ => print!("o")
+                }                
+            }
+            println!("");
+        }
+    }
+
+    #[test]
+    fn test_overlay_map() {
+        let height = 10;
+        let driver = Driver::new();
+        let sprite_map = driver.generate_sprite_map(height);
+        driver.overlay_map(10, 0, height);
+
+        let vram = driver.vram;
+
+        println!("Display map: ");
+        for y in 0..vram.len() {
+            print!("Row {}: ", y);
+            for x in vram[y].iter() {
+                match x {
+                    1 => print!("*"),
+                    _ => print!("o")
                 }                
             }
             println!("");
