@@ -74,6 +74,39 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_clear_screen() {
+        let height = 10;
+        let mut driver = Driver::new();
+
+        let sprite_map = driver.generate_sprite_map(height);
+        driver.overlay_map(50, 10, sprite_map, height);
+
+        println!("Display map: ");
+        for y in 0..driver.vram.len() {
+            for x in driver.vram[y].iter() {
+                match x {
+                    1 => print!("*"),
+                    _ => print!("o")
+                }
+            }
+            println!("");
+        }
+
+        driver.clear_screen();
+
+        println!("Display map: ");
+        for y in 0..driver.vram.len() {
+            for x in driver.vram[y].iter() {
+                match x {
+                    1 => print!("*"),
+                    _ => print!("o")
+                }
+            }
+            println!("");
+        }
+    }
+
+    #[test]
     fn test_generate_sprite_map() {
         let driver = Driver::new();
         let sprite_map = driver.generate_sprite_map(10);
