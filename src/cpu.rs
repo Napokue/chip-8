@@ -230,8 +230,8 @@ impl Cpu {
             // Cxkk - RND Vx, byte
             (0x0C, _, _, _) => {
                 println!("Cxkk");
-                self.v[x as usize] = 
-                    rand::thread_rng().gen_range(0, 255) &
+                self.v[x as usize] =
+                    rand::thread_rng().gen_range(0..255) &
                     kk;
 
                 self.next_instruction();
